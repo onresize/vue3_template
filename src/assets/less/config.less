@@ -1,0 +1,242 @@
+// https://ant.design/docs/spec/colors-cn
+// https://github.com/vueComponent/ant-design-vue/blob/next/components/style/themes/default.less
+
+// 常用尺寸
+@margin: 24px;
+@radius: 4px;
+
+// 常用元素色
+@color-bg: @color-white;
+@color-text: lighten(@color-black, 15%);
+@color-tips: @color-gray;
+@color-border: lighten(@color-black, 94%);
+@color-panel: #091f3d;
+@color-sub-panel: #042e58;
+@color-input: darken(@color-white, 1.2%);
+@color-mask: rgba(0, 0, 0, 0.6);
+@color-shadow: #f0f1f2;
+@color-hover: lighten(@color-blue, 10%);
+@color-cricle: linear-gradient(270deg, #009fef 0%, #00e6ff 100%);
+
+// 常用配色
+@color-white: #fff;
+@color-black: #000;
+@color-blue: #1890ff;
+@color-red: #ff5757;
+@color-yellow: #faad14;
+@color-green: #52c41a;
+@color-gray: lighten(@color-black, 55%);
+@color-disable: rgba(0, 0, 0, 0.25);
+@color-33: #333333;
+
+// 满背景效果
+.mixin-bg() {
+  display: flex;
+  flex-shrink: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+// 图片自适应避免拉伸
+.mixin-img() {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// 多行省略
+.mixin-line-clamp(@count) {
+  display: -webkit-box;
+  -webkit-line-clamp: @count;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+// 自定义全局样式
+.flex {
+  display: flex;
+}
+.j-c {
+  justify-content: center;
+}
+.a-c {
+  align-items: center;
+}
+
+.color-33 {
+  color: @color-33;
+}
+
+.ft-16 {
+  font-size: 16px;
+}
+.ft-18 {
+  font-size: 18px;
+}
+.ft-20 {
+  font-size: 20px;
+}
+.ft-22 {
+  font-size: 22px;
+}
+.ft-24 {
+  font-size: 24px;
+}
+.ft-white {
+  color: @color-white;
+}
+.ft-pink {
+  color: pink;
+}
+.ft-blue {
+  color: blue;
+}
+
+.ft-bold {
+  font-weight: bold;
+  font-family: "楷体";
+}
+
+.bg-f5 {
+  background-color: #f5f5f5;
+}
+.bg-ccc {
+  background-color: #ccc;
+}
+.bg-yellow {
+  background-color: @color-yellow;
+}
+.bg-blue {
+  background-color: @color-blue;
+}
+.bg-red {
+  background-color: @color-red;
+}
+.bg-green {
+  background-color: @color-green;
+}
+.bg-pink {
+  background-color: pink;
+}
+
+.border-5 {
+  border-radius: 5px;
+}
+.border-10 {
+  border-radius: 10px;
+}
+.border-15 {
+  border-radius: 15px;
+}
+
+.mg-5 {
+  margin: 5px;
+}
+.mg-10 {
+  margin: 10px;
+}
+.mg-15 {
+  margin: 15px;
+}
+
+.mg-l-10 {
+  margin-left: 10px;
+}
+.mg-l-20 {
+  margin-left: 20px;
+}
+.mg-l-30 {
+  margin-left: 30px;
+}
+.mg-l-40 {
+  margin-left: 40px;
+}
+
+.mg-r-10 {
+  margin-right: 10px;
+}
+.mg-r-20 {
+  margin-right: 20px;
+}
+.mg-r-30 {
+  margin-right: 30px;
+}
+.mg-r-40 {
+  margin-right: 40px;
+}
+
+.mg-t-10 {
+  margin-top: 10px;
+}
+.mg-t-20 {
+  margin-top: 20px;
+}
+.mg-t-30 {
+  margin-top: 30px;
+}
+.mg-t-40 {
+  margin-top: 40px;
+}
+
+.mg-b-10 {
+  margin-bottom: 10px;
+}
+.mg-b-20 {
+  margin-bottom: 20px;
+}
+.mg-b-30 {
+  margin-bottom: 30px;
+}
+.mg-b-40 {
+  margin-bottom: 40px;
+}
+
+.pg-5 {
+  padding: 5px;
+}
+.pg-10 {
+  padding: 10px;
+}
+.pg-t-20 {
+  padding-top: 20px;
+}
+
+.h-30 {
+  height: 30px;
+}
+.h-40 {
+  height: 40px;
+}
+.h-50 {
+  height: 50px;
+}
+.h-300 {
+  height: 300px;
+}
+.w-30 {
+  width: 30px;
+}
+.w-40 {
+  width: 40px;
+}
+.w-50 {
+  width: 50px;
+}
+.w-100 {
+  width: 100px;
+}
+.w-300 {
+  width: 300px;
+}
+.w-400 {
+  width: 400px;
+}
+.div-mb {
+  margin-bottom: 26vh !important;
+}
