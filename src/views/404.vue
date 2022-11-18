@@ -79,9 +79,9 @@ export default {
             if (this.clearInte) {
               return false;
             }
-            // this.$router.push({
-            //   path: '/'
-            // })
+            this.$router.push({
+              path: "/",
+            });
           }, 500);
         }
       }, 1000);
