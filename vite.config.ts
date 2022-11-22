@@ -30,12 +30,11 @@ export default ({ mode }) => {
      * @see https://cn.vitejs.dev/config/#server-proxy
      */
     server: {
-      port: 3010,
       // proxy: {
-      //   '/devapi': {
+      //   '/baseApi': {
       //     target: env.VITE_APP_PROXY_API,
       //     changeOrigin: true,
-      //     rewrite: (path) => path.replace(/^\/devapi/, ''),
+      //     rewrite: (path) => path.replace(/^\/baseApi/, ''),
       //   },
       // },
     },
