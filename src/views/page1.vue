@@ -95,6 +95,10 @@ import { ref, reactive } from "vue";
 import type { UploadProps, UploadUserFile } from "element-plus";
 import { useMainStore } from "@/store/main";
 import { getTableList } from "@/api/page1";
+import useCancelRequest from "@/hooks/useCancelRequest";
+
+// 销毁前关闭当前页面请求
+useCancelRequest();
 
 const PiniaStore = useMainStore();
 PiniaStore.$patch({

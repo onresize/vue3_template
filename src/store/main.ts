@@ -13,6 +13,7 @@ export const useMainStore = defineStore("mainPinia", {
   state: () => ({
     shoesCount: 18,
     isOpenSlide: true, //默认展开侧边状态
+    cancelAxios: null, // 终止axios请求
   }),
   // 声明getters
   getters: {

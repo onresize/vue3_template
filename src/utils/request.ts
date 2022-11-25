@@ -11,7 +11,9 @@ const request = axios.create({
 
 request.interceptors.request.use(
   (config) => {
-    config.headers["a"] = "aaa";
+    config.cancelToken = new axios.CancelToken(function (v) {
+      PiniaStore.cancelAxios = v;
+    });
     return config;
   },
   (err) => {
