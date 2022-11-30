@@ -14,6 +14,14 @@ import "@less/global.less";
 const app = createApp(App);
 // app.config.globalProperties.$bus = mitt()
 
+// 线上关闭console
+function reWriteLog() {
+  console.log = (function (log) {
+    return import.meta.env.MODE == 'production' ? function () { } : log
+  }(console.log))
+}
+reWriteLog()
+
 // element-plus国际化
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 app.use(ElementPlus, {
