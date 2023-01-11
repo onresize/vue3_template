@@ -5,7 +5,6 @@ import "nprogress/nprogress.css";
 import routes from "./routes";
 import config from "@/config";
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
