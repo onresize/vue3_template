@@ -98,6 +98,7 @@ watch(
       "padding: 3px; color: white; background: #023047; border-radius: 5px 0 0 5px;",
       "padding: 3px; color: white; background: #219EBC;border-radius: 0 5px 5px 0;"
     );
+    // https://www.jb51.net/article/263340.htm
     if (version !== PiniaStore.version) {
       ElMessage.warning("版本更新, 请尝试刷新整个网页!");
       PiniaStore.version = version;
