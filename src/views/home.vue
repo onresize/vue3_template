@@ -81,14 +81,34 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useMainStore } from "@/store/main";
+import { version } from "../../package.json";
 import AdaptionPage from "./adaptionPackage/index";
 
 const PiniaStore = useMainStore();
 let router = useRoute();
 console.log("路由-------------", router);
+watch(
+  () => router,
+  ({ name }, oldData) => {
+    console.log(
+      `%cVersion:%c${version}`,
+      "padding: 3px; color: white; background: #023047; border-radius: 5px 0 0 5px;",
+      "padding: 3px; color: white; background: #219EBC;border-radius: 0 5px 5px 0;"
+    );
+    if (version !== PiniaStore.version) {
+      ElMessage.warning("版本更新, 请尝试刷新整个网页!");
+      PiniaStore.version = version;
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+);
+
 let key = computed(() =>
   router.name
     ? String(router.name) + new Date()

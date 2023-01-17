@@ -12,6 +12,7 @@ export const useMainStore = defineStore("mainPinia", {
   // 声明store
   state: () => ({
     shoesCount: 18,
+    version: "0.0.1", // 版本号build后比对提示更新
     isOpenSlide: true, //默认展开侧边状态
     cancelAxios: null, // 终止axios请求
   }),
