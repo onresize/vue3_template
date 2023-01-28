@@ -1,9 +1,11 @@
 import type { RouteRecordRaw } from "vue-router";
 
+import Layout from "@/layout/index.vue";
+
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    redirect: "/page1",
+    redirect: "page1",
   },
   // 匹配不到页面跳404
   { path: "/:pathMatch(.*)", redirect: { name: "404" } },
@@ -14,14 +16,19 @@ const routes: RouteRecordRaw[] = [
     component: () => import("@views/404.vue"),
   },
   {
-    path: "/home",
-    meta: { title: "首页" },
-    component: () => import("@views/home.vue"),
+    path: "/layoutPage",
+    name: "layoutPage",
+    component: Layout,
+    redirect: "home",
     children: [
+      {
+        path: "/home",
+        meta: { title: "首页" },
+        component: () => import("@views/home.vue"),
+      },
       {
         path: "/page1",
         name: "page1",
-        meta: { title: "数据处理" },
         component: () => import("@views/page1.vue"),
       },
       {
