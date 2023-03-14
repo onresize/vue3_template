@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-export const useMainStore = defineStore("mainPinia", {
+export const useMainStore = defineStore("Pinia", {
   // 全局引入pinia缓存插件缓存数据配置、下面三种写法、默认缓存到localStorage
   // persist: {
   //   key: "PiniaStore",

@@ -57,7 +57,7 @@ import {
   defineAsyncComponent,
 } from "vue";
 
-import { useMainStore } from "@/store/main";
+import { useMainStore } from "@/store/pinia";
 
 const PiniaStore = useMainStore();
 

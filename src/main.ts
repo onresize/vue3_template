@@ -28,14 +28,7 @@ app.use(ElementPlus, {
   locale: zhCn,
 });
 
-//引入持久化插件
-import piniaPersist from "pinia-plugin-persistedstate";
-
-// 使用pinia
-import { createPinia } from "pinia";
-const pinia = createPinia();
-pinia.use(piniaPersist); // 全局缓存pinia数据
-app.use(pinia);
+import pinia from "@/store/store";
 
 // 全局注册图标
 import * as Icons from "@element-plus/icons-vue";
@@ -61,26 +54,25 @@ console.log("环境变量", import.meta.env);
 //   v().then((m) => console.log(k + ":", m.default));
 // });
 
-import allComponents from "@cp/index";
+// import allComponents from "@cp/index";
 
-type Filter = {
-  format: <T>(str: T) => string;
-};
+// type Filter = {
+//   format: <T>(str: T) => string;
+// };
 // 声明文件、在ts中防止报错、vue3移除了filters 可以用全局函数代替
-declare module "@vue/runtime-core" {
-  export interface ComponentCustomProperties {
-    $env: string;
-    $filters: Filter;
-  }
-}
+// declare module "@vue/runtime-core" {
+//   export interface ComponentCustomProperties {
+//     $env: string;
+//     $filters: Filter;
+//   }
+// }
 
-app.config.globalProperties.$filters = {
-  format<T>(str: T): string {
-    return `--------${str}---------`;
-  },
-};
+// app.config.globalProperties.$filters = {
+//   format<T>(str: T): string {
+//     return `--------${str}---------`;
+//   },
+// };
 // 声明全局变量 代替vue2的prototype
 // app.config.globalProperties.$env = "这是一个main.ts下声明的全局变量";
 
-app.use(ElementPlus);
-app.use(router).mount("#app");
+app.use(ElementPlus).use(pinia).use(router).mount("#app");

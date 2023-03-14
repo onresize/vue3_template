@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch, computed } from "vue";
 import { useRoute } from "vue-router";
-import { useMainStore } from "@/store/main";
+import { useMainStore } from "@/store/pinia";
 import { version } from "../../package.json";
 import AdaptionPage from "./adaptionPackage/index";
 

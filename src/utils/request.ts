@@ -1,4 +1,10 @@
 import axios from "axios";
+import pinia from "@/store/store";
+import { useMainStore } from "@/store/pinia";
+// 重新挂载pinia
+const PiniaStore = useMainStore(pinia);
+
+console.log("requestJS拿到pinia的值----------", PiniaStore);
 
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 axios.defaults.withCredentials = false;
@@ -22,7 +28,7 @@ request.interceptors.request.use(
   }
 );
 
-service.interceptors.response.use((response) => {
+request.interceptors.response.use((response) => {
   return response.data;
 });
 
