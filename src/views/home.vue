@@ -12,6 +12,13 @@ import {
   watchEffect,
   defineAsyncComponent,
 } from "vue";
+import { useMainStore } from "@/store/pinia";
+
+const PiniaStore = useMainStore();
+PiniaStore.$patch({
+  isOpenSlide: false,
+});
+
 </script>
 
 <style scoped></style>

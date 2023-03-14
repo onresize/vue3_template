@@ -54,7 +54,6 @@ console.log("环境变量", import.meta.env);
 //   v().then((m) => console.log(k + ":", m.default));
 // });
 
-// import allComponents from "@cp/index";
 
 // type Filter = {
 //   format: <T>(str: T) => string;

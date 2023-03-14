@@ -3,10 +3,6 @@
     <el-container style="background: #f5f5f5">
       <el-header class="header_top">
         <div class="left_header">
-          <div>
-            <div class="bg_l"></div>
-            <div class="border_r"></div>
-          </div>
           <div></div>
         </div>
       </el-header>
@@ -386,26 +382,8 @@ a {
     // border: 2px solid yellowgreen;
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     > div:nth-child(1) {
-      display: flex;
-      .bg_l {
-        width: 24px;
-        height: 24px;
-        background: url("@img/gjx/菜单ICON.png") no-repeat center;
-        background-size: 100% 100%;
-        margin: 0 20px 0 0;
-      }
-      .border_r {
-        height: 24px;
-        width: 1px;
-        margin: 1px 0 0 0;
-        background: #ebeaef;
-      }
-    }
-    > div:nth-child(2) {
-      // width: 27px;
-      // height: 25px;
       width: 289px;
       height: 40px;
       // border: 2px solid red;
