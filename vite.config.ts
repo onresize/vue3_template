@@ -3,6 +3,7 @@ import path from "path";
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import components from "unplugin-vue-components/vite";
+import VUeSetupExtend from 'vite-plugin-vue-setup-extend'
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import banner from "vite-plugin-banner";
 import pkg from "./package.json";
@@ -120,8 +121,11 @@ export default ({ mode }) => {
     },
 
     plugins: [
-      vue(),
+      vue({
+        refTransform: true, // 开启ref转换、使用$ref响应式定义、不需要.value
+      }),
       vueJsx(),
+      VUeSetupExtend(), // name增强
       // https://github.com/intlify/vite-plugin-vue-i18n
       VueI18n({
         include: [resolve(__dirname, "@/src/locales/**")],
