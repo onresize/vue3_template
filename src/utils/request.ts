@@ -4,32 +4,30 @@ import { useMainStore } from "@/store/pinia";
 // 重新挂载pinia
 const PiniaStore = useMainStore(pinia);
 
-console.log("requestJS拿到pinia的值----------", PiniaStore);
-
-axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
-axios.defaults.withCredentials = false;
-
-// console.log("request请求地址：", import.meta.env.VITE_APP_BASE_API);
-const request = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API,
-  timeout: 8000,
-});
-
-request.interceptors.request.use(
-  (config) => {
-    config.cancelToken = new axios.CancelToken(function (v) {
-      PiniaStore.cancelAxios = v;
+export default function server(obj: any) {
+  axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
+  axios.defaults.withCredentials = false;
+  return new Promise((resolve, reject) => {
+    console.log("开发模式下request请求地址：", import.meta.env.VITE_APP_BASE_API);
+    const request = axios.create({
+      baseURL: obj.url.includes("/api")
+        ? import.meta.env.VITE_OTHER_BASE_API
+        : import.meta.env.VITE_APP_BASE_API,
+      timeout: 10000,
     });
-    return config;
-  },
-  (err) => {
-    console.error(err);
-    return Promise.reject(err);
-  }
-);
 
-request.interceptors.response.use((response) => {
-  return response.data;
-});
+    request.interceptors.request.use(
+      (config) => {
+        config.cancelToken = new axios.CancelToken(function (v) {
+          PiniaStore.cancelAxios = v;
+        });
+        return config;
+      },
+      (err) => reject(err)
+    );
 
-export default request;
+    request.interceptors.response.use((response) => response.data);
+
+    resolve(request({...obj}));
+  });
+}

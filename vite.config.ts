@@ -2,8 +2,9 @@ import { defineConfig, loadEnv } from "vite";
 import path from "path";
 import vue from "@vitejs/plugin-vue";
 import components from "unplugin-vue-components/vite";
-import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import AutoImport from "unplugin-auto-import/vite";
+import viteCompression from "vite-plugin-compression";
+import VueSetupExtend from "vite-plugin-vue-setup-extend";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import banner from "vite-plugin-banner";
 import pkg from "./package.json";
@@ -13,59 +14,27 @@ import VueI18n from "@intlify/vite-plugin-vue-i18n";
 
 const resolve = (dir: string): string => path.resolve(__dirname, dir);
 
-export default ({ mode }) => {
+export default defineConfig(({ mode }) => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
   console.log("当前环境env ===>", env);
 
   return {
-    /**
-     * 如果生产部署和开发路径不一样，可以在这里动态配置
-     * @see https://cn.vitejs.dev/config/#base
-     */
     base: "/",
-
-    /**
-     * 本地开发服务，也可以配置接口代理
-     * @see https://cn.vitejs.dev/config/#server-proxy
-     */
     server: {
-      // proxy: {
-      //   '/baseApi': {
-      //     target: env.VITE_APP_PROXY_API,
-      //     changeOrigin: true,
-      //     rewrite: (path) => path.replace(/^\/baseApi/, ''),
-      //   },
-      // },
+      proxy: {
+        '/baseApi': {
+          target: env.VITE_APP_BASE_API_URL,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/baseApi/, ''),
+        },
+        '/otherAPi': {
+          target: env.VITE_OTHER_BASE_API_URL,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/otherAPi/, ''),
+        },
+      },
     },
-
-    // build: {
-    //   rollupOptions: {
-    //     /**
-    //      * 如果要对比较大的组件库打包单独的 chunk，可以在这里配置
-    //      * @see https://rollupjs.org/guide/en/#outputmanualchunks
-    //      */
-    //     output: {
-    //       // 其中一种方式
-    //       manualChunks: {
-    //         'ant-design-vue': ['ant-design-vue'],
-    //         '@icon-park': ['@icon-park/vue-next'],
-    //       },
-
-    //       // 另外一种方式
-    //       // manualChunks(id) {
-    //       //   if (id.includes('node_modules')) {
-    //       //     return id
-    //       //       .toString()
-    //       //       .split('node_modules/')[1]
-    //       //       .split('/')[0]
-    //       //       .toString()
-    //       //   }
-    //       // },
-    //     },
-    //   },
-    // },
-
     resolve: {
       alias: {
         // 兼容webpack的习惯
@@ -84,7 +53,6 @@ export default ({ mode }) => {
         "~@views": resolve("src/views"),
       },
     },
-
     css: {
       /**
        * 包括 vw / rem 单位转换等
@@ -119,13 +87,20 @@ export default ({ mode }) => {
         },
       },
     },
-
     plugins: [
       vue({
         refTransform: true, // 开启ref转换、使用$ref响应式定义、不需要.value
       }),
       vueJsx(),
-      VueSetupExtend(), // name增强
+      VueSetupExtend(), // * name 可以写在 script 标签上
+      env.VITE_BUILD_GZIP &&
+        viteCompression({
+          verbose: true,
+          disable: false,
+          threshold: 10240,
+          algorithm: "gzip",
+          ext: ".gz",
+        }),
       // https://github.com/intlify/vite-plugin-vue-i18n
       VueI18n({
         include: [resolve(__dirname, "@/src/locales/**")],
@@ -148,5 +123,31 @@ export default ({ mode }) => {
         `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: v${pkg.description}\n * author: ${pkg.author}\n */`
       ),
     ],
+    // * 打包去除 console.log && debugger
+    esbuild: {
+      pure: env.VITE_DROP_CONSOLE ? ["console.log", "debugger"] : [],
+    },
+    build: {
+      outDir: "dist",
+      // minify: "esbuild",
+      // esbuild 打包更快，但是不能去除 console.log，terser打包慢，但能去除 console.log
+      // 报错安装: npm i terser --legacy--peer-deps
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: env.VITE_DROP_CONSOLE,
+          drop_debugger: env.VITE_DROP_CONSOLE,
+        },
+      },
+      chunkSizeWarningLimit: 1500,
+      rollupOptions: {
+        output: {
+          // Static resource classification and packaging
+          chunkFileNames: "assets/js/[name]-[hash].js",
+          entryFileNames: "assets/js/[name]-[hash].js",
+          assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
+        },
+      },
+    },
   };
-};
+});
