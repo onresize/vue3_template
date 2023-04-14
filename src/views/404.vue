@@ -584,7 +584,6 @@ export default {
 .counter_item {
   width: 30px;
   height: 55px;
-  background: transparent url("~@/assets/imgs/404/counter_back.gif") no-repeat;
   overflow: hidden;
   float: left;
   margin-top: 2px;
@@ -595,71 +594,5 @@ export default {
   width: 30px;
   height: 55px;
   overflow: hidden;
-}
-
-.counter_item .front {
-  background: transparent url("~@/assets/imgs/404/counter_front.png") no-repeat;
-  position: fixed;
-  z-index: 10;
-}
-
-.counter_item .digit_colon {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 0;
-}
-
-.counter_item .digit0 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -55px;
-}
-
-.counter_item .digit1 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -110px;
-}
-
-.counter_item .digit2 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -165px;
-}
-
-.counter_item .digit3 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -220px;
-}
-
-.counter_item .digit4 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -275px;
-}
-
-.counter_item .digit5 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -330px;
-}
-
-.counter_item .digit6 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -385px;
-}
-
-.counter_item .digit7 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -440px;
-}
-
-.counter_item .digit8 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -495px;
-}
-
-.counter_item .digit9 {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -550px;
-}
-
-.counter_item .digit_cherry {
-  background: transparent url("~@/assets/imgs/404/counter_digits.png") no-repeat
-    0 -605px;
 }
 </style>

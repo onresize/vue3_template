@@ -39,32 +39,32 @@ export default ({ mode }) => {
       // },
     },
 
-    // build: {
-    //   rollupOptions: {
-    //     /**
-    //      * 如果要对比较大的组件库打包单独的 chunk，可以在这里配置
-    //      * @see https://rollupjs.org/guide/en/#outputmanualchunks
-    //      */
-    //     output: {
-    //       // 其中一种方式
-    //       manualChunks: {
-    //         'ant-design-vue': ['ant-design-vue'],
-    //         '@icon-park': ['@icon-park/vue-next'],
-    //       },
-
-    //       // 另外一种方式
-    //       // manualChunks(id) {
-    //       //   if (id.includes('node_modules')) {
-    //       //     return id
-    //       //       .toString()
-    //       //       .split('node_modules/')[1]
-    //       //       .split('/')[0]
-    //       //       .toString()
-    //       //   }
-    //       // },
-    //     },
-    //   },
-    // },
+    build: {
+      // sourcemap: true, // 构建后是否生成 source map 文件
+      //   rollupOptions: {
+      //     /**
+      //      * 如果要对比较大的组件库打包单独的 chunk，可以在这里配置
+      //      * @see https://rollupjs.org/guide/en/#outputmanualchunks
+      //      */
+      //     output: {
+      //       // 其中一种方式
+      //       manualChunks: {
+      //         'ant-design-vue': ['ant-design-vue'],
+      //         '@icon-park': ['@icon-park/vue-next'],
+      //       },
+      //       // 另外一种方式
+      //       // manualChunks(id) {
+      //       //   if (id.includes('node_modules')) {
+      //       //     return id
+      //       //       .toString()
+      //       //       .split('node_modules/')[1]
+      //       //       .split('/')[0]
+      //       //       .toString()
+      //       //   }
+      //       // },
+      //     },
+      //   },
+    },
 
     resolve: {
       alias: {
@@ -125,7 +125,7 @@ export default ({ mode }) => {
       vueJsx(),
       // https://github.com/intlify/vite-plugin-vue-i18n
       VueI18n({
-        include: [resolve(__dirname, "@/src/locales/**")],
+        include: [resolve(__dirname, "@/locales/**")],
       }),
       AutoImport({
         resolvers: [ElementPlusResolver()],

@@ -1,12 +1,12 @@
 {
 	"name": "vue_admin",
-	"version": "0.0.2",
+	"version": "0.0.9",
 	"description": "",
 	"author": "",
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"dev": "vite --host --open",
+		"dev": "vite --host",
 		"build": "node ./addVersion.js && vue-tsc --noEmit && vite build",
 		"build:vite": "node ./addVersion.js && vite build",
 		"serve": "vite preview",

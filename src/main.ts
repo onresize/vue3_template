@@ -20,7 +20,7 @@ function reWriteLog() {
     return import.meta.env.MODE == "production" ? function () {} : log;
   })(console.log);
 }
-reWriteLog();
+// reWriteLog();
 
 // element-plus国际化
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";

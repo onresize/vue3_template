@@ -60,6 +60,7 @@ import { useMainStore } from "@/store/main";
 
 const PiniaStore = useMainStore();
 
+
 PiniaStore.$patch({
   isOpenSlide: true,
 });
