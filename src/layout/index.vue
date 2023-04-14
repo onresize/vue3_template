@@ -2,11 +2,7 @@
   <AdaptionPage>
     <el-container style="background: #f5f5f5">
       <el-header class="header_top">
-        <div class="left_header">
-          <div>
-            <div class="bg_l"></div>
-            <div class="border_r"></div>
-          </div>
+        <div class="left_header" @click="toHome">
           <div></div>
         </div>
       </el-header>
@@ -70,7 +66,13 @@
             <!--XXX 设置跨路由的动画、所有的router-view加上key只会导致动画失效 -->
             <router-view v-slot="{ Component }">
               <transition name="slide-fade">
-                <component class="child-view" :is="Component" />
+                <keep-alive include="home">
+                  <component
+                    class="child-view"
+                    :is="Component"
+                    :key="router.path"
+                  />
+                </keep-alive>
               </transition>
             </router-view>
           </el-main>
@@ -80,15 +82,16 @@
   </AdaptionPage>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive, watch, computed } from "vue";
-import { useRoute } from "vue-router";
-import { useMainStore } from "@/store/main";
+import { useRoute, useRouter } from "vue-router";
+import { useMainStore } from "@/store/pinia";
 import { version } from "../../package.json";
 import AdaptionPage from "./adaptionPackage/index";
 
 const PiniaStore = useMainStore();
 let router = useRoute();
+let Router = useRouter();
 console.log("路由-------------", router);
 watch(
   () => router,
@@ -100,7 +103,7 @@ watch(
     );
     // https://www.jb51.net/article/263340.htm
     if (version !== PiniaStore.version) {
-      ElMessage.warning("版本更新, 请尝试刷新整个网页!");
+      // ElMessage.warning("版本更新, 请尝试刷新整个网页!");
       PiniaStore.version = version;
     }
   },
@@ -115,15 +118,15 @@ let key = computed(() =>
     ? String(router.name) + new Date()
     : String(router.path) + new Date()
 );
-let RouterList = reactive<object[]>([
+let RouterList = reactive([
   { path: "page1", name: "数据处理" },
   { path: "page2", name: "数据服务" },
   { path: "page3", name: "资源目录" },
 ]);
 // 用于动态绑定图标
-let IconList = reactive<string[]>(["bg-img0", "bg-img1", "bg-img2"]);
+let IconList = reactive(["bg-img0", "bg-img1", "bg-img2"]);
 
-let page2SilderList = reactive<string[]>([
+let page2SilderList = reactive([
   "空间属性",
   "图属联动",
   "智能量算",
@@ -131,7 +134,11 @@ let page2SilderList = reactive<string[]>([
   "飞行模式",
   "覅之关闭",
 ]);
-let page2Active = ref<number>(0);
+let page2Active = ref(0);
+
+const toHome = () => {
+  Router.push({ name: "home" });
+};
 
 const closeSlide = () => {
   PiniaStore.$patch({
@@ -380,32 +387,15 @@ a {
   background: linear-gradient(90deg, #1d3363, #0f2044);
   box-shadow: 0px 4px 5px 0px rgba(214, 214, 214, 0.24);
   .left_header {
+    cursor: pointer;
     width: 358px;
     height: 42px;
     margin: 13px 0 0 0;
     // border: 2px solid yellowgreen;
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     > div:nth-child(1) {
-      display: flex;
-      .bg_l {
-        width: 24px;
-        height: 24px;
-        background: url("@img/gjx/菜单ICON.png") no-repeat center;
-        background-size: 100% 100%;
-        margin: 0 20px 0 0;
-      }
-      .border_r {
-        height: 24px;
-        width: 1px;
-        margin: 1px 0 0 0;
-        background: #ebeaef;
-      }
-    }
-    > div:nth-child(2) {
-      // width: 27px;
-      // height: 25px;
       width: 289px;
       height: 40px;
       // border: 2px solid red;

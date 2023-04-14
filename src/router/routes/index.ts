@@ -5,7 +5,7 @@ import Layout from "@/layout/index.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    redirect: "page1",
+    redirect: 'home'
   },
   // 匹配不到页面跳404
   { path: "/:pathMatch(.*)", redirect: { name: "404" } },
@@ -23,6 +23,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: "/home",
+        name: 'home',
         meta: { title: "首页" },
         component: () => import("@views/home.vue"),
       },
