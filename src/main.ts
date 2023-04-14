@@ -14,7 +14,6 @@ import "@less/global.less";
 const app = createApp(App);
 // app.config.globalProperties.$bus = mitt()
 
-<<<<<<< HEAD
 // 线上关闭console
 function reWriteLog() {
   console.log = (function (log) {
@@ -23,8 +22,6 @@ function reWriteLog() {
 }
 // reWriteLog();
 
-=======
->>>>>>> 81a89c9838bd91cdef8eef1f902b73b5ac0a8634
 // element-plus国际化
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 app.use(ElementPlus, {

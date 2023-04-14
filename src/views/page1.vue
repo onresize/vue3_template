@@ -93,12 +93,12 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import type { UploadProps, UploadUserFile } from "element-plus";
-import { useMainStore } from "@/store/main";
+import { useMainStore } from "@/store/pinia";
 import { getTableList } from "@/api/page1";
 import useCancelRequest from "@/hooks/useCancelRequest";
 
 // 销毁前关闭当前页面请求
-useCancelRequest();
+// useCancelRequest();
 
 const PiniaStore = useMainStore();
 PiniaStore.$patch({
