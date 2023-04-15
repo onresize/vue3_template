@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
       },
     },
 
-    build: {
+    // build: {
       // sourcemap: true, // 构建后是否生成 source map 文件
       //   rollupOptions: {
       //     /**
@@ -61,7 +61,7 @@ export default defineConfig(({ mode }) => {
       //       // },
       //     },
       //   },
-    },
+    // },
 
     resolve: {
       alias: {

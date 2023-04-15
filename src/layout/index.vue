@@ -9,7 +9,7 @@
 
       <el-container class="container">
         <!-- 侧边栏 -->
-        <el-card style="height: 10010px; width: 227px" class="card">
+        <div class="aside_card_box">
           <el-aside class="home_container_aside">
             <div v-for="(item, index) in RouterList" :key="index" class="aa">
               <div class="cc">
@@ -22,6 +22,7 @@
                 </router-link>
               </div>
             </div>
+            <!-- 切换按钮 -->
             <div v-if="router.name != 'page1'">
               <div
                 v-if="PiniaStore.isOpenSlide"
@@ -56,7 +57,7 @@
               <LazyTree></LazyTree>
             </div>
           </el-aside>
-        </el-card>
+        </div>
 
         <!-- 右侧内容 -->
         <el-card
@@ -154,16 +155,18 @@ const openSlide = () => {
 
 <style scoped lang="less">
 :deep(.card) {
-  transition: all 1s;
+  transition: all 0s !important;
   .el-card__body {
     padding: 0;
     box-sizing: border-box;
   }
 }
 .infoCard {
-  width: 100%;
+  width: calc(100% - 232px);
   height: 985px;
   margin: 15px;
+  position: absolute;
+  left: 197px;
 }
 
 .scaleCard {
@@ -193,15 +196,23 @@ const openSlide = () => {
 // 设置隐藏滚动条且还能滚动
 .container {
   overflow: hidden !important;
+  .aside_card_box {
+    height: calc(100vh - 190px);
+    width: 197px;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    overflow: hidden;
+  }
   .left2_side {
     width: 191px;
     height: 1018px;
     background: #ffffff;
-    border-left: 2px solid #e9edf2;
+    // border-left: 2px solid #e9edf2;
     position: absolute;
     z-index: 10;
     top: 62px;
-    transition: all 1s;
+    // transition: all 1s;
     .sildeBox {
       box-sizing: border-box;
       width: 100%;
@@ -244,7 +255,7 @@ const openSlide = () => {
         border-radius: 4px;
         text-align: center;
         user-select: none;
-        transition: all 0.7s;
+        // transition: all 0.7s;
         > span {
           width: 140px;
           height: 15px;
@@ -262,13 +273,11 @@ const openSlide = () => {
     }
   }
   .closeSlide {
-    left: 0px;
     z-index: -1;
-    opacity: 0;
   }
   .infoOpenSlide {
-    left: 201px;
-    opacity: 1;
+    left: 197px;
+    box-shadow: 6px 0px 12px rgba(0, 0, 0, 0.12) inset;
   }
 }
 .home_container_main {
@@ -281,18 +290,19 @@ const openSlide = () => {
 
 a {
   display: inline-block;
-  width: 227px;
+  width: 197px;
   height: 42px;
   line-height: 42px;
 }
 
 .aa {
-  width: 227px;
+  width: 197px;
+  height: 42px;
   display: inline-flex;
 }
 
 .bb {
-  width: 227px;
+  width: 197px;
   height: 42px;
   background: linear-gradient(90deg, #0066c8, #d1e7fd);
   line-height: 42px;
@@ -302,10 +312,12 @@ a {
   font-family: Microsoft YaHei;
   font-weight: 400;
   color: #ffffff !important;
+  box-sizing: border-box;
+  // border-right: 2px solid #d1e7fd;
 }
 
 .info_style {
-  width: 227px;
+  width: 198px;
   height: 42px;
   line-height: 42px;
   font-size: 14px;
@@ -317,18 +329,19 @@ a {
 }
 
 .cc {
-  width: 227px;
+  width: 197px;
   height: 42px;
   line-height: 42px;
   text-align: center;
+  border: none;
+  outline: none;
   > span {
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
     display: inline-block;
     border: 3px solid transparent;
     position: absolute;
-    // border: 2px red solid;
-    left: 50px;
+    left: 38px;
     z-index: 2;
     margin-top: 6px;
     background-size: 100% 100%;
@@ -349,19 +362,19 @@ a {
 }
 
 .home_container_aside {
-  height: 1000px;
-  width: 227px;
+  height: 100vh;
+  width: 197px;
+  margin-top: -1px;
   box-sizing: border-box;
-  // background: yellow;
-  padding-bottom: 30px;
-  overflow-x: hidden;
+  outline: none;
+  border: none;
   .left_btn {
     width: 19px;
     height: 45px;
     background: url("@img/gjx/收起.png") no-repeat center;
     position: absolute;
     bottom: 30px;
-    left: 182px;
+    left: 179px;
     cursor: pointer;
     filter: opacity(0.7);
   }
@@ -371,7 +384,7 @@ a {
     background: url("@img/gjx/打开.png") no-repeat center;
     position: absolute;
     bottom: 30px;
-    left: 182px;
+    left: 179px;
     cursor: pointer;
     filter: opacity(0.7);
   }
@@ -383,7 +396,6 @@ a {
 .header_top {
   height: 62px;
   width: 100%;
-  // margin: 0 0 8px 0;
   background: linear-gradient(90deg, #1d3363, #0f2044);
   box-shadow: 0px 4px 5px 0px rgba(214, 214, 214, 0.24);
   .left_header {
