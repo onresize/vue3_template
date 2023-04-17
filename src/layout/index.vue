@@ -1,6 +1,6 @@
 <template>
   <AdaptionPage>
-    <el-container style="background: #f5f5f5">
+    <el-container>
       <el-header class="header_top">
         <div class="left_header" @click="toHome">
           <div></div>
@@ -9,7 +9,7 @@
 
       <el-container class="container">
         <!-- 侧边栏 -->
-        <div class="aside_card_box">
+        <div>
           <el-aside class="home_container_aside">
             <div v-for="(item, index) in RouterList" :key="index" class="aa">
               <div class="cc">
@@ -23,7 +23,7 @@
               </div>
             </div>
             <!-- 切换按钮 -->
-            <div v-if="router.name != 'page1'">
+            <div v-if="!['page1', 'home'].includes(router.name)">
               <div
                 v-if="PiniaStore.isOpenSlide"
                 class="left_btn"
@@ -196,19 +196,11 @@ const openSlide = () => {
 // 设置隐藏滚动条且还能滚动
 .container {
   overflow: hidden !important;
-  .aside_card_box {
-    height: calc(100vh - 190px);
-    width: 197px;
-    box-sizing: border-box;
-    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
-    background-color: #ffffff;
-    overflow: hidden;
-  }
   .left2_side {
-    width: 191px;
+    width: 197px;
     height: 1018px;
     background: #ffffff;
-    // border-left: 2px solid #e9edf2;
+    // border: 2px solid red;
     position: absolute;
     z-index: 10;
     top: 62px;
@@ -362,12 +354,11 @@ a {
 }
 
 .home_container_aside {
-  height: 100vh;
-  width: 197px;
   margin-top: -1px;
+  background: #ffffff;
+  height: 1100px;
+  width: 197px;
   box-sizing: border-box;
-  outline: none;
-  border: none;
   .left_btn {
     width: 19px;
     height: 45px;
