@@ -15,6 +15,8 @@ export const useMainStore = defineStore("Pinia", {
     version: "0.0.1", // 版本号build后比对提示更新
     isOpenSlide: true, //默认展开侧边状态
     cancelAxios: null, // 终止axios请求
+    routerNowNum: 2, // 当前路由数值、确认svg高亮
+    iconList: [], // 缓存所有svg
   }),
   // 声明getters
   getters: {
@@ -31,6 +33,13 @@ export const useMainStore = defineStore("Pinia", {
     addCount(num) {
       console.log("actions方法addCount");
       this.shoesCount += num;
+    },
+    changeRouterNowNum(num) {
+      console.log(num)
+      this.routerNowNum = num;
+    },
+    changeSvgList(list) {
+      this.iconList = list;
     },
     //异步
     addDelayCount(num) {

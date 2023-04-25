@@ -13,13 +13,26 @@
           <el-aside class="home_container_aside">
             <div v-for="(item, index) in RouterList" :key="index" class="aa">
               <div class="cc">
-                <span :class="IconList[index]"></span>
-                <router-link
+                <svg-icon
+                  :name="item.svg"
+                  :style="{
+                    color: PiniaStore.routerNowNum == index ? '#EEE' : '#666',
+                  }"
+                />
+                <div
+                  @click="changeSliderNum(index, item.path)"
+                  :class="[
+                    PiniaStore.routerNowNum == index ? 'bb' : 'info_style',
+                  ]"
+                >
+                  {{ item.name }}
+                </div>
+                <!-- <router-link
                   :to="item.path"
                   active-class="bb"
                   class="info_style"
                   >{{ item.name }}
-                </router-link>
+                </router-link> -->
               </div>
             </div>
             <!-- 切换按钮 -->
@@ -120,9 +133,9 @@ let key = computed(() =>
     : String(router.path) + new Date()
 );
 let RouterList = reactive([
-  { path: "page1", name: "数据处理" },
-  { path: "page2", name: "数据服务" },
-  { path: "page3", name: "资源目录" },
+  { path: "page1", name: "数据处理", svg: "user" },
+  { path: "page2", name: "数据服务", svg: "bug" },
+  { path: "page3", name: "资源目录", svg: "star" },
 ]);
 // 用于动态绑定图标
 let IconList = reactive(["bg-img0", "bg-img1", "bg-img2"]);
@@ -137,7 +150,13 @@ let page2SilderList = reactive([
 ]);
 let page2Active = ref(0);
 
+const changeSliderNum = (num, path) => {
+  PiniaStore.changeRouterNowNum(num);
+  Router.push(path);
+};
+
 const toHome = () => {
+  PiniaStore.changeRouterNowNum(111);
   Router.push({ name: "home" });
 };
 
@@ -294,7 +313,7 @@ a {
 }
 
 .bb {
-  width: 197px;
+  width: 198px;
   height: 42px;
   background: linear-gradient(90deg, #0066c8, #d1e7fd);
   line-height: 42px;
@@ -305,7 +324,6 @@ a {
   font-weight: 400;
   color: #ffffff !important;
   box-sizing: border-box;
-  // border-right: 2px solid #d1e7fd;
 }
 
 .info_style {
@@ -318,6 +336,7 @@ a {
   text-decoration: none;
   opacity: 0.9;
   color: #333333;
+  cursor: pointer;
 }
 
 .cc {
@@ -327,15 +346,14 @@ a {
   text-align: center;
   border: none;
   outline: none;
-  > span {
-    width: 25px;
-    height: 25px;
-    display: inline-block;
+  > svg {
+    width: 18px;
+    height: 18px;
     border: 3px solid transparent;
     position: absolute;
     left: 38px;
     z-index: 2;
-    margin-top: 6px;
+    margin-top: 10px;
     background-size: 100% 100%;
   }
   .bg-img0 {
@@ -354,6 +372,7 @@ a {
 }
 
 .home_container_aside {
+  user-select: none;
   margin-top: -1px;
   background: #ffffff;
   height: 1100px;

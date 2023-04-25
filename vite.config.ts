@@ -14,6 +14,9 @@ import VueI18n from "@intlify/vite-plugin-vue-i18n";
 
 const resolve = (dir: string): string => path.resolve(__dirname, dir);
 
+// SvgIcon插件
+import { svgBuilder } from "./src/plugins/svgBuilder";
+
 export default defineConfig(({ mode }) => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
@@ -23,44 +26,44 @@ export default defineConfig(({ mode }) => {
     base: "/",
     server: {
       proxy: {
-        '/baseApi': {
+        "/baseApi": {
           target: env.VITE_APP_BASE_API_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/baseApi/, ''),
+          rewrite: (path) => path.replace(/^\/baseApi/, ""),
         },
-        '/otherAPi': {
+        "/otherAPi": {
           target: env.VITE_OTHER_BASE_API_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/otherAPi/, ''),
+          rewrite: (path) => path.replace(/^\/otherAPi/, ""),
         },
       },
     },
 
     // build: {
-      // sourcemap: true, // 构建后是否生成 source map 文件
-      //   rollupOptions: {
-      //     /**
-      //      * 如果要对比较大的组件库打包单独的 chunk，可以在这里配置
-      //      * @see https://rollupjs.org/guide/en/#outputmanualchunks
-      //      */
-      //     output: {
-      //       // 其中一种方式
-      //       manualChunks: {
-      //         'ant-design-vue': ['ant-design-vue'],
-      //         '@icon-park': ['@icon-park/vue-next'],
-      //       },
-      //       // 另外一种方式
-      //       // manualChunks(id) {
-      //       //   if (id.includes('node_modules')) {
-      //       //     return id
-      //       //       .toString()
-      //       //       .split('node_modules/')[1]
-      //       //       .split('/')[0]
-      //       //       .toString()
-      //       //   }
-      //       // },
-      //     },
-      //   },
+    // sourcemap: true, // 构建后是否生成 source map 文件
+    //   rollupOptions: {
+    //     /**
+    //      * 如果要对比较大的组件库打包单独的 chunk，可以在这里配置
+    //      * @see https://rollupjs.org/guide/en/#outputmanualchunks
+    //      */
+    //     output: {
+    //       // 其中一种方式
+    //       manualChunks: {
+    //         'ant-design-vue': ['ant-design-vue'],
+    //         '@icon-park': ['@icon-park/vue-next'],
+    //       },
+    //       // 另外一种方式
+    //       // manualChunks(id) {
+    //       //   if (id.includes('node_modules')) {
+    //       //     return id
+    //       //       .toString()
+    //       //       .split('node_modules/')[1]
+    //       //       .split('/')[0]
+    //       //       .toString()
+    //       //   }
+    //       // },
+    //     },
+    //   },
     // },
 
     resolve: {
@@ -119,6 +122,7 @@ export default defineConfig(({ mode }) => {
       vue({
         refTransform: true, // 开启ref转换、使用$ref响应式定义、不需要.value
       }),
+      svgBuilder("./src/assets/icons/svg/"), // 导入所有svg
       vueJsx(),
       VueSetupExtend(), // * name 可以写在 script 标签上
       env.VITE_BUILD_GZIP &&

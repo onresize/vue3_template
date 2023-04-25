@@ -14,6 +14,14 @@ import "@less/global.less";
 const app = createApp(App);
 // app.config.globalProperties.$bus = mitt()
 
+import "./assets/icons/index"; // 引入所有svg
+// 全局注册SvgIcon组件
+import SvgIcon from "@/components/SvgIcon/index.vue";
+app.component("svg-icon", SvgIcon);
+
+// 引入自定义指令
+import directives from "@/directives/index";
+
 // 线上关闭console
 function reWriteLog() {
   console.log = (function (log) {
@@ -74,4 +82,4 @@ console.log("环境变量", import.meta.env);
 // 声明全局变量 代替vue2的prototype
 // app.config.globalProperties.$env = "这是一个main.ts下声明的全局变量";
 
-app.use(ElementPlus).use(pinia).use(router).mount("#app");
+app.use(ElementPlus).use(pinia).use(router).use(directives).mount("#app");
