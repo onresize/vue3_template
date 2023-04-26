@@ -71,6 +71,6 @@ export default routes
     (err) => {
       if (err) throw err;
       // 如果没有错误
-      console.log("./src/router.js 生成成功！")
+      console.log("./src/router/routes/index.ts 生成成功！")
     });
 });
