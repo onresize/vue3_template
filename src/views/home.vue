@@ -1,5 +1,8 @@
 <template>
-  <h2>缓存home页面--{{ tim }}</h2>
+  <div class="flex">
+    <h2 class="HH2">缓存home页面--{{ tim }}</h2>
+    <el-button @click="ChangeColor">修改颜色</el-button>
+  </div>
   <myTextCom
     v-bind="{
       color: 'pink',
@@ -51,6 +54,21 @@ const Route = useRoute();
 
 const modelValue = ref("h函数-双向绑定值");
 
+let randomColorArr = ["red", "green", "pink", "black", "yellow", "skyblue"];
+
+let Style = ref({
+  pWidth: "300px",
+  pHeight: "300px",
+  pMargin: "20px",
+  pColor: "black",
+});
+
+const ChangeColor = () => {
+  Style.value.pColor = randomColorArr
+    .sort(() => Math.random() - Math.random())
+    .at(2);
+};
+
 // 定义变量忽略.value
 let tim = $ref(0);
 
@@ -87,4 +105,14 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.flex {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  .HH2 {
+    color: v-bind("Style.pColor");
+    padding-right: 20px;
+  }
+}
+</style>

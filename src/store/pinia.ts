@@ -15,7 +15,7 @@ export const useMainStore = defineStore("Pinia", {
     version: "0.0.1", // 版本号build后比对提示更新
     isOpenSlide: true, //默认展开侧边状态
     cancelAxios: null, // 终止axios请求
-    routerNowNum: 2, // 当前路由数值、确认svg高亮
+    routerNowNum: 111, // 当前路由数值、确认svg高亮
     iconList: [], // 缓存所有svg
   }),
   // 声明getters

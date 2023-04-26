@@ -34,7 +34,7 @@ const myPicCom = (props, { slots }) => {
   const { width, height, src } = props
   return [
     h('img', {
-      class: "picBox", style: { width: (width || '100px'), height: (height || '100px'), borderRadius: '50%', objectFit: 'contain' }, src: src || 'https://img0.baidu.com/it/u=1217304799,3113310756&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', alt: 'noPic', onClick() {
+      class: "picBox", style: { width: (width || '100px'), height: (height || '100px'), borderRadius: '50%', objectFit: 'contain', marginTop: '20px' }, src: src || 'https://img0.baidu.com/it/u=1217304799,3113310756&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', alt: 'noPic', onClick() {
         alert('触发方法测试')
       }
     })
