@@ -60,7 +60,7 @@
       class="flex_dialog"
     >
       <el-form-item label="名称">
-        <el-input v-model="upLoadObj.name" class="w-400" />
+        <el-input v-model="upLoadObj.name" class="w-400" @change="updateIpt" />
       </el-form-item>
       <el-form-item label="上传单位">
         <el-input v-model="upLoadObj.Lct" class="w-400" />
@@ -90,9 +90,8 @@
   </el-dialog>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from "vue";
-import type { UploadProps, UploadUserFile } from "element-plus";
+<script setup>
+import { ref, reactive, getCurrentInstance } from "vue";
 import { useMainStore } from "@/store/pinia";
 import { getTableList } from "@/api/page1";
 import useCancelRequest from "@/hooks/useCancelRequest";
@@ -100,16 +99,23 @@ import useCancelRequest from "@/hooks/useCancelRequest";
 // 销毁前关闭当前页面请求
 // useCancelRequest();
 
+let { ctx, proxy } = getCurrentInstance();
+
 const PiniaStore = useMainStore();
 PiniaStore.$patch({
   isOpenSlide: false,
 });
 
-let total = ref<number>(100);
+let total = ref(100);
 let queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
 });
+
+const updateIpt = (ipt) => {
+  console.log("更新ipt:", ipt);
+  ctx.$forceUpdate();
+};
 
 const getList = async () => {
   // const [err, data] = await getTableList();
@@ -119,7 +125,6 @@ const getList = async () => {
   //   console.log("全局：", data);
   // }
 };
-
 
 const dialogVisible = ref(false);
 const tableData = reactive([
