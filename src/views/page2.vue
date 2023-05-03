@@ -1,12 +1,6 @@
 <template>
   <!-- 表格 -->
-  <el-table
-    class="table"
-    :data="tableData"
-    style="width: 100%; height: calc(90% + 61px)"
-    border
-    highlight-current-row
-  >
+  <el-table class="table" :data="tableData" border highlight-current-row>
     <el-table-column type="index" label="序号" width="80" align="center" />
     <el-table-column
       prop="name"
@@ -60,10 +54,10 @@ import { useMainStore } from "@/store/pinia";
 
 const PiniaStore = useMainStore();
 
-
 PiniaStore.$patch({
   isOpenSlide: true,
 });
+PiniaStore.changeSliderState(false);
 
 let total = ref<number>(100);
 let queryParams = reactive({

@@ -1,99 +1,116 @@
 <template>
-  <AdaptionPage>
-    <el-container>
-      <el-header class="header_top">
-        <div class="left_header" @click="toHome">
-          <div></div>
+  <!-- <AdaptionPage> -->
+  <el-container class="container-box">
+    <!-- 侧边栏 -->
+    <div>
+      <el-aside
+        class="home_container_aside"
+        :style="{ width: PiniaStore.isCollapse ? '65px' : '197px' }"
+      >
+        <el-menu
+          default-active="1"
+          :collapse="PiniaStore.isCollapse"
+          :collapse-transition="false"
+          active-text-color="#ffd04b"
+          background-color="#545c64"
+          text-color="#fff"
+          style="height: 100vh"
+          :unique-opened="true"
+        >
+          <el-sub-menu index="1">
+            <template #title>
+              <el-icon><location /></el-icon>
+              <span>导航栏</span>
+            </template>
+            <el-menu-item index="1-1" @click="toHome">首页</el-menu-item>
+          </el-sub-menu>
+
+          <el-menu-item
+            v-for="(item, index) in RouterList"
+            :key="index"
+            :index="index + 2"
+            @click="changeSliderNum(index, item.path)"
+          >
+            <el-icon><setting /></el-icon>
+            <template #title> {{ item.name }}</template>
+          </el-menu-item>
+        </el-menu>
+        <!-- 切换按钮 -->
+        <div v-if="!['page1', 'home'].includes(router.name)">
+          <div
+            v-if="PiniaStore.isOpenSlide"
+            class="left_btn"
+            @click="closeSlide"
+          ></div>
+          <div v-else class="right_btn" @click="openSlide"></div>
+        </div>
+      </el-aside>
+      <!-- 动态伸缩侧边 -->
+      <el-aside
+        :class="[
+          'left2_side',
+          PiniaStore.isOpenSlide ? 'infoOpenSlide' : 'closeSlide',
+        ]"
+      >
+        <!-- page2显示的侧边 -->
+        <div v-if="router.name == 'page2'" class="sildeBox">
+          <div
+            v-for="(item, i) in page2SilderList"
+            :key="i"
+            :class="[page2Active == i ? 'itemSildeBox' : 'infoSliderBox']"
+            @click="page2Active = i"
+          >
+            <span>
+              {{ item }}
+            </span>
+          </div>
+        </div>
+        <!-- page3显示的侧边 -->
+        <div v-if="router.name == 'page3'" class="sildeBox">
+          <LazyTree></LazyTree>
+        </div>
+      </el-aside>
+    </div>
+
+    <!-- 右侧内容 -->
+    <div>
+      <el-header
+        :class="[
+          'header_top',
+          PiniaStore.isOpenSlide ? 'scaleHeader' : 'infoHeader',
+        ]"
+      >
+        <div class="left_header">
+          <svg-icon
+            name="noCollapse"
+            class="ico"
+            v-show="['/home', '/page1'].includes(router.path)"
+            @click="changeCollapse"
+          />
         </div>
       </el-header>
 
-      <el-container class="container">
-        <!-- 侧边栏 -->
-        <div>
-          <el-aside class="home_container_aside">
-            <div v-for="(item, index) in RouterList" :key="index" class="aa">
-              <div class="cc">
-                <svg-icon
-                  :name="item.svg"
-                  :style="{
-                    color: PiniaStore.routerNowNum == index ? '#EEE' : '#666',
-                  }"
+      <el-card
+        :class="['card', PiniaStore.isOpenSlide ? 'scaleCard' : 'infoCard']"
+      >
+        <el-main class="home_container_main">
+          <!-- XXX 设置跨路由的动画、所有的router-view加上key只会导致动画失效 -->
+          <router-view v-slot="{ Component }">
+            <transition name="slide-fade">
+              <keep-alive include="home">
+                <component
+                  class="child-view"
+                  :is="Component"
+                  :key="router.path"
                 />
-                <div
-                  @click="changeSliderNum(index, item.path)"
-                  :class="[
-                    PiniaStore.routerNowNum == index ? 'bb' : 'info_style',
-                  ]"
-                >
-                  {{ item.name }}
-                </div>
-                <!-- <router-link
-                  :to="item.path"
-                  active-class="bb"
-                  class="info_style"
-                  >{{ item.name }}
-                </router-link> -->
-              </div>
-            </div>
-            <!-- 切换按钮 -->
-            <div v-if="!['page1', 'home'].includes(router.name)">
-              <div
-                v-if="PiniaStore.isOpenSlide"
-                class="left_btn"
-                @click="closeSlide"
-              ></div>
-              <div v-else class="right_btn" @click="openSlide"></div>
-            </div>
-          </el-aside>
-          <!-- 动态伸缩侧边 -->
-          <el-aside
-            :class="[
-              'left2_side',
-              PiniaStore.isOpenSlide ? 'infoOpenSlide' : 'closeSlide',
-            ]"
-          >
-            <!-- page2显示的侧边 -->
-            <div v-if="router.name == 'page2'" class="sildeBox">
-              <div
-                v-for="(item, i) in page2SilderList"
-                :key="i"
-                :class="[page2Active == i ? 'itemSildeBox' : 'infoSliderBox']"
-                @click="page2Active = i"
-              >
-                <span>
-                  {{ item }}
-                </span>
-              </div>
-            </div>
-            <!-- page3显示的侧边 -->
-            <div v-if="router.name == 'page3'" class="sildeBox">
-              <LazyTree></LazyTree>
-            </div>
-          </el-aside>
-        </div>
-
-        <!-- 右侧内容 -->
-        <el-card
-          :class="['card', PiniaStore.isOpenSlide ? 'scaleCard' : 'infoCard']"
-        >
-          <el-main class="home_container_main">
-            <!--XXX 设置跨路由的动画、所有的router-view加上key只会导致动画失效 -->
-            <router-view v-slot="{ Component }">
-              <transition name="slide-fade">
-                <keep-alive include="home">
-                  <component
-                    class="child-view"
-                    :is="Component"
-                    :key="router.path"
-                  />
-                </keep-alive>
-              </transition>
-            </router-view>
-          </el-main>
-        </el-card>
-      </el-container>
-    </el-container>
-  </AdaptionPage>
+              </keep-alive>
+            </transition>
+          </router-view>
+        </el-main>
+      </el-card>
+    </div>
+  </el-container>
+  <!-- </AdaptionPage> -->
 </template>
 
 <script setup>
@@ -107,6 +124,9 @@ const PiniaStore = useMainStore();
 let router = useRoute();
 let Router = useRouter();
 console.log("路由-------------", router);
+
+const infoCardWid = ref("calc(100vw - 232px)");
+
 watch(
   () => router,
   ({ name }, oldData) => {
@@ -126,6 +146,24 @@ watch(
     immediate: true,
   }
 );
+
+const changeCollapse = () => {
+  PiniaStore.changeSliderState(!PiniaStore.isCollapse);
+  if (["/home", "/page1"].includes(router.path)) {
+    if (PiniaStore.isCollapse) {
+      infoCardWid.value = "calc(100vw - 100px)";
+    } else {
+      infoCardWid.value = "calc(100vw - 232px)";
+    }
+  }
+};
+
+const handleOpen = (key, keyPath) => {
+  console.log("open:", key, keyPath);
+};
+const handleClose = (key, keyPath) => {
+  console.log("close:", key, keyPath);
+};
 
 let key = computed(() =>
   router.name
@@ -181,16 +219,15 @@ const openSlide = () => {
   }
 }
 .infoCard {
-  width: calc(100% - 232px);
-  height: 985px;
+  width: v-bind(infoCardWid);
+  height: calc(100% - 92px);
   margin: 15px;
   position: absolute;
-  left: 197px;
 }
 
 .scaleCard {
   width: calc(100% - 430px);
-  height: 985px;
+  height: calc(100% - 92px);
   margin: 15px;
   position: absolute;
   left: 395px;
@@ -213,16 +250,18 @@ const openSlide = () => {
   opacity: 0;
 }
 // 设置隐藏滚动条且还能滚动
-.container {
-  overflow: hidden !important;
+.container-box {
+  overflow: hidden;
+  display: flex;
+  width: 100vw;
   .left2_side {
     width: 197px;
-    height: 1018px;
+    height: 100%;
     background: #ffffff;
     // border: 2px solid red;
     position: absolute;
     z-index: 10;
-    top: 62px;
+    top: 0;
     // transition: all 1s;
     .sildeBox {
       box-sizing: border-box;
@@ -290,6 +329,10 @@ const openSlide = () => {
     left: 197px;
     box-shadow: 6px 0px 12px rgba(0, 0, 0, 0.12) inset;
   }
+
+  > div:nth-child(2) {
+    flex: 1;
+  }
 }
 .home_container_main {
   box-sizing: border-box;
@@ -297,33 +340,6 @@ const openSlide = () => {
   height: 945px;
   overflow: hidden;
   // border: 3px solid red;
-}
-
-a {
-  display: inline-block;
-  width: 197px;
-  height: 42px;
-  line-height: 42px;
-}
-
-.aa {
-  width: 197px;
-  height: 42px;
-  display: inline-flex;
-}
-
-.bb {
-  width: 198px;
-  height: 42px;
-  background: linear-gradient(90deg, #0066c8, #d1e7fd);
-  line-height: 42px;
-  text-align: center;
-  opacity: 0.9;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
-  color: #ffffff !important;
-  box-sizing: border-box;
 }
 
 .info_style {
@@ -339,34 +355,6 @@ a {
   cursor: pointer;
 }
 
-.cc {
-  width: 197px;
-  height: 42px;
-  line-height: 42px;
-  text-align: center;
-  border: none;
-  outline: none;
-  > svg {
-    width: 18px;
-    height: 18px;
-    border: 3px solid transparent;
-    position: absolute;
-    left: 38px;
-    z-index: 2;
-    margin-top: 10px;
-    background-size: 100% 100%;
-  }
-  .bg-img0 {
-    background: url("@img/gjx/数据处理ICON.png") no-repeat center;
-  }
-  .bg-img1 {
-    background: url("@img/gjx/数据服务ICON.png") no-repeat center;
-  }
-  .bg-img2 {
-    background: url("@img/gjx/资源目录ICON.png") no-repeat center;
-  }
-}
-
 .home_container {
   overflow-y: hidden;
 }
@@ -375,8 +363,8 @@ a {
   user-select: none;
   margin-top: -1px;
   background: #ffffff;
-  height: 1100px;
   width: 197px;
+  height: 100vh;
   box-sizing: border-box;
   .left_btn {
     width: 19px;
@@ -405,25 +393,39 @@ a {
 }
 .header_top {
   height: 62px;
-  width: 100%;
-  background: linear-gradient(90deg, #1d3363, #0f2044);
-  box-shadow: 0px 4px 5px 0px rgba(214, 214, 214, 0.24);
+  // background: linear-gradient(90deg, #1d3363, #0f2044);
+  // box-shadow: 0px 4px 5px 0px rgba(214, 214, 214, 0.24);
+  box-sizing: border-box;
+  border: 1px solid #e4e7ed;
+  background-color: #ffffff;
+  overflow: hidden;
+  color: #303133;
+
   .left_header {
-    cursor: pointer;
     width: 358px;
     height: 42px;
-    margin: 13px 0 0 0;
+    margin-left: -10px;
     // border: 2px solid yellowgreen;
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    > div:nth-child(1) {
-      width: 289px;
-      height: 40px;
-      // border: 2px solid red;
-      background: url("@img/gjx/logo.png") no-repeat center;
-      background-size: 100% 100%;
+    align-items: center;
+    .ico {
+      cursor: pointer;
+      font-size: 24px;
     }
   }
+}
+
+.infoHeader {
+  // width: calc(100vw - 195px);
+  position: relative;
+  left: 0;
+}
+
+.scaleHeader {
+  // width: calc(100vw - 393px);
+  position: relative;
+  left: 197px;
 }
 </style>

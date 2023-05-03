@@ -43,7 +43,7 @@ import * as Icons from "@element-plus/icons-vue";
 Object.keys(Icons).forEach((key) => {
   app.component(key, Icons[key]);
 });
-console.log("全局引入图标", Object.keys(Icons));
+// console.log("全局引入图标", Object.keys(Icons));
 
 // i18国际化
 // import { setupI18n } from "./plugins/i18n";

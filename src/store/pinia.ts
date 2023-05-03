@@ -17,6 +17,7 @@ export const useMainStore = defineStore("Pinia", {
     cancelAxios: null, // 终止axios请求
     routerNowNum: 111, // 当前路由数值、确认svg高亮
     iconList: [], // 缓存所有svg
+    isCollapse: false, // 侧边栏、false展开
   }),
   // 声明getters
   getters: {
@@ -35,8 +36,12 @@ export const useMainStore = defineStore("Pinia", {
       this.shoesCount += num;
     },
     changeRouterNowNum(num) {
-      console.log(num)
+      console.log(num);
       this.routerNowNum = num;
+    },
+    changeSliderState(res) {
+      console.log("vuex：", res);
+      this.isCollapse = res;
     },
     changeSvgList(list) {
       this.iconList = list;
