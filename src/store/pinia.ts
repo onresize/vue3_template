@@ -39,8 +39,8 @@ export const useMainStore = defineStore("Pinia", {
       console.log(num);
       this.routerNowNum = num;
     },
+    // 改变侧边栏缩展状态
     changeSliderState(res) {
-      console.log("vuex：", res);
       this.isCollapse = res;
     },
     changeSvgList(list) {

@@ -11,6 +11,13 @@ fs.readdir(vueDir, function (err, files) {
     return;
   }
   let routers = ``, routersChildren = [];
+  let keyObj = {
+    '404': { title: '404', ico: 'Guide' },
+    'home': { title: '首页', ico: 'HomeFilled' },
+    'page1': { title: '数据处理', ico: 'setting' },
+    'page2': { title: '数据服务', ico: 'Operation' },
+    'page3': { title: '数据目录', ico: 'Memo' },
+  }, pTitle, pIco
   for (const filename of files) {
     if (filename.indexOf('.') < 0) {
       continue;
@@ -27,10 +34,14 @@ fs.readdir(vueDir, function (err, files) {
       routerName = match[1];
     }
 
+    pTitle = keyObj[name]?.title
+    pIco = keyObj[name]?.ico
+
     routersChildren.push(
       `{
         path: '/${name}',
         name: '${name}',
+        meta: {title: '${pTitle}', ico: '${pIco}' },
         component: () => import('@/views/${name}.${ext}')
       }`
     )
@@ -65,8 +76,8 @@ var routes: RouteRecordRaw[] = [
 
 export default routes
 
-`
-  // console.log(routersChildren);
+  `
+  // console.log('路由children:', routersChildren);
   fs.writeFile('./src/router/routes/index.ts', result, 'utf-8',
     (err) => {
       if (err) throw err;

@@ -24,22 +24,27 @@ var routes: RouteRecordRaw[] = [
     children: [{
         path: '/404',
         name: '404',
+        meta: {title: '404', ico: 'Guide' },
         component: () => import('@/views/404.vue')
       },{
         path: '/home',
         name: 'home',
+        meta: {title: '首页', ico: 'HomeFilled' },
         component: () => import('@/views/home.vue')
       },{
         path: '/page1',
         name: 'page1',
+        meta: {title: '数据处理', ico: 'setting' },
         component: () => import('@/views/page1.vue')
       },{
         path: '/page2',
         name: 'page2',
+        meta: {title: '数据服务', ico: 'Operation' },
         component: () => import('@/views/page2.vue')
       },{
         path: '/page3',
         name: 'page3',
+        meta: {title: '数据目录', ico: 'Memo' },
         component: () => import('@/views/page3.vue')
       }]
   },
@@ -47,3 +52,4 @@ var routes: RouteRecordRaw[] = [
 
 export default routes
 
+  

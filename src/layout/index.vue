@@ -22,18 +22,18 @@
               <el-icon><location /></el-icon>
               <span>导航栏</span>
             </template>
-            <el-menu-item index="1-1" @click="toHome">首页</el-menu-item>
+            <el-menu-item
+              v-for="(item, index) in RouterList"
+              :key="index"
+              :index="index + '-' + index + 1"
+              @click="changeSliderPath(item.path)"
+            >
+              <el-icon>
+                <component :is="item.meta?.ico"></component>
+              </el-icon>
+              <template #title> {{ item.meta.title }}</template>
+            </el-menu-item>
           </el-sub-menu>
-
-          <el-menu-item
-            v-for="(item, index) in RouterList"
-            :key="index"
-            :index="index + 2"
-            @click="changeSliderNum(index, item.path)"
-          >
-            <el-icon><setting /></el-icon>
-            <template #title> {{ item.name }}</template>
-          </el-menu-item>
         </el-menu>
         <!-- 切换按钮 -->
         <div v-if="!['page1', 'home'].includes(router.name)">
@@ -47,6 +47,7 @@
       </el-aside>
       <!-- 动态伸缩侧边 -->
       <el-aside
+        v-if="['page2', 'page3'].includes(router.name)"
         :class="[
           'left2_side',
           PiniaStore.isOpenSlide ? 'infoOpenSlide' : 'closeSlide',
@@ -66,7 +67,7 @@
           </div>
         </div>
         <!-- page3显示的侧边 -->
-        <div v-if="router.name == 'page3'" class="sildeBox">
+        <div v-else class="sildeBox">
           <LazyTree></LazyTree>
         </div>
       </el-aside>
@@ -82,7 +83,7 @@
       >
         <div class="left_header">
           <svg-icon
-            name="noCollapse"
+            :name="PiniaStore.isCollapse ? 'collapse' : 'noCollapse'"
             class="ico"
             v-show="['/home', '/page1'].includes(router.path)"
             @click="changeCollapse"
@@ -114,18 +115,53 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed } from "vue";
+import {
+  ref,
+  reactive,
+  watch,
+  computed,
+  onBeforeUnmount,
+  getCurrentInstance,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useDebounceFn } from "@vueuse/core";
 import { useMainStore } from "@/store/pinia";
 import { version } from "../../package.json";
 import AdaptionPage from "./adaptionPackage/index";
+import routerList from "@/router/routes/index.ts";
+
+let RouterList = routerList[3].children.filter((v) => v.name != "404");
+console.log(RouterList);
+
+let { ctx, proxy } = getCurrentInstance();
 
 const PiniaStore = useMainStore();
 let router = useRoute();
 let Router = useRouter();
-console.log("路由-------------", router);
+// console.log("路由:", router);
 
 const infoCardWid = ref("calc(100vw - 232px)");
+
+// 监听屏幕变化
+const screenWidth = ref(0);
+const listeningWindow = useDebounceFn(() => {
+  screenWidth.value = window.innerWidth;
+  if (!["page1", "home"].includes(router.name)) return;
+  if (!PiniaStore.isCollapse && screenWidth.value < 760)
+    PiniaStore.changeSliderState(true);
+  if (PiniaStore.isCollapse && screenWidth.value > 760)
+    PiniaStore.changeSliderState(false);
+}, 100);
+
+window.addEventListener("resize", listeningWindow, false);
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", listeningWindow);
+});
+
+const changeCollapse = () => {
+  PiniaStore.changeSliderState(!PiniaStore.isCollapse);
+};
 
 watch(
   () => router,
@@ -147,36 +183,29 @@ watch(
   }
 );
 
-const changeCollapse = () => {
-  PiniaStore.changeSliderState(!PiniaStore.isCollapse);
-  if (["/home", "/page1"].includes(router.path)) {
-    if (PiniaStore.isCollapse) {
-      infoCardWid.value = "calc(100vw - 100px)";
-    } else {
-      infoCardWid.value = "calc(100vw - 232px)";
+watch(
+  () => PiniaStore.isCollapse,
+  (val) => {
+    if (["/home", "/page1"].includes(router.path)) {
+      console.log("监听到侧边栏状态值：", val);
+      if (val) {
+        infoCardWid.value = "calc(100vw - 100px)";
+      } else {
+        infoCardWid.value = "calc(100vw - 232px)";
+      }
     }
+  },
+  {
+    deep: true,
+    immediate: true,
   }
-};
-
-const handleOpen = (key, keyPath) => {
-  console.log("open:", key, keyPath);
-};
-const handleClose = (key, keyPath) => {
-  console.log("close:", key, keyPath);
-};
+);
 
 let key = computed(() =>
   router.name
     ? String(router.name) + new Date()
     : String(router.path) + new Date()
 );
-let RouterList = reactive([
-  { path: "page1", name: "数据处理", svg: "user" },
-  { path: "page2", name: "数据服务", svg: "bug" },
-  { path: "page3", name: "资源目录", svg: "star" },
-]);
-// 用于动态绑定图标
-let IconList = reactive(["bg-img0", "bg-img1", "bg-img2"]);
 
 let page2SilderList = reactive([
   "空间属性",
@@ -188,14 +217,8 @@ let page2SilderList = reactive([
 ]);
 let page2Active = ref(0);
 
-const changeSliderNum = (num, path) => {
-  PiniaStore.changeRouterNowNum(num);
+const changeSliderPath = (path) => {
   Router.push(path);
-};
-
-const toHome = () => {
-  PiniaStore.changeRouterNowNum(111);
-  Router.push({ name: "home" });
 };
 
 const closeSlide = () => {

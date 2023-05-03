@@ -20,6 +20,8 @@ router.beforeEach((to) => {
   // 项目不需要动态路由、pinia挂载写这里才能持久化、写外面数据刷新丢失
   const store = useMainStore();
 
+  console.log("进入路由：", to);
+
   NProgress.start();
 });
 
