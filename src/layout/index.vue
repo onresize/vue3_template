@@ -23,7 +23,7 @@
               <span>导航栏</span>
             </template>
             <el-menu-item
-              v-for="(item, index) in RouterList"
+              v-for="(item, index) in RouterList1"
               :key="index"
               :index="index + '-' + index + 1"
               @click="changeSliderPath(item.path)"
@@ -34,9 +34,20 @@
               <template #title> {{ item.meta.title }}</template>
             </el-menu-item>
           </el-sub-menu>
+          <el-menu-item
+            v-for="(item, index) in RouterList"
+            :key="index"
+            :index="index + 1"
+            @click="changeSliderPath(item.path)"
+          >
+            <el-icon>
+              <component :is="item.meta?.ico"></component>
+            </el-icon>
+            <template #title> {{ item.meta.title }}</template>
+          </el-menu-item>
         </el-menu>
         <!-- 切换按钮 -->
-        <div v-if="!['page1', 'home'].includes(router.name)">
+        <div v-if="!['page1', 'home', '404'].includes(router.name)">
           <div
             v-if="PiniaStore.isOpenSlide"
             class="left_btn"
@@ -54,7 +65,7 @@
         ]"
       >
         <!-- page2显示的侧边 -->
-        <div v-if="router.name == 'page2'" class="sildeBox">
+        <div v-show="router.name == 'page2'" class="sildeBox">
           <div
             v-for="(item, i) in page2SilderList"
             :key="i"
@@ -67,7 +78,7 @@
           </div>
         </div>
         <!-- page3显示的侧边 -->
-        <div v-else class="sildeBox">
+        <div v-show="router.name == 'page3'" class="sildeBox">
           <LazyTree></LazyTree>
         </div>
       </el-aside>
@@ -120,6 +131,7 @@ import {
   reactive,
   watch,
   computed,
+  nextTick,
   onBeforeUnmount,
   getCurrentInstance,
 } from "vue";
@@ -130,8 +142,12 @@ import { version } from "../../package.json";
 import AdaptionPage from "./adaptionPackage/index";
 import routerList from "@/router/routes/index.ts";
 
-let RouterList = routerList[3].children.filter((v) => v.name != "404");
-console.log(RouterList);
+let RouterList = routerList[3].children.filter(
+  (v) => !["404", "home"].includes(v.name)
+);
+let RouterList1 = routerList[3].children.filter((v) =>
+  ["404", "home"].includes(v.name)
+);
 
 let { ctx, proxy } = getCurrentInstance();
 
@@ -166,15 +182,19 @@ const changeCollapse = () => {
 watch(
   () => router,
   ({ name }, oldData) => {
-    console.log(
-      `%cVersion:%c${version}`,
-      "padding: 3px; color: white; background: #023047; border-radius: 5px 0 0 5px;",
-      "padding: 3px; color: white; background: #219EBC;border-radius: 0 5px 5px 0;"
-    );
+    // console.log(
+    //   `%cVersion:%c${version}`,
+    //   "padding: 3px; color: white; background: #023047; border-radius: 5px 0 0 5px;",
+    //   "padding: 3px; color: white; background: #219EBC;border-radius: 0 5px 5px 0;"
+    // );
     // https://www.jb51.net/article/263340.htm
-    if (version !== PiniaStore.version) {
-      // ElMessage.warning("版本更新, 请尝试刷新整个网页!");
-      PiniaStore.version = version;
+    // if (version !== PiniaStore.version) {
+    // ElMessage.warning("版本更新, 请尝试刷新整个网页!");
+    // PiniaStore.version = version;
+    // }
+    console.log("home监听路由：", name);
+    if (name == "404") {
+      PiniaStore.changeIsOpenSlide(false);
     }
   },
   {
@@ -188,11 +208,13 @@ watch(
   (val) => {
     if (["/home", "/page1"].includes(router.path)) {
       console.log("监听到侧边栏状态值：", val);
-      if (val) {
-        infoCardWid.value = "calc(100vw - 100px)";
-      } else {
-        infoCardWid.value = "calc(100vw - 232px)";
-      }
+      nextTick(() => {
+        if (val) {
+          infoCardWid.value = "calc(100vw - 100px)";
+        } else {
+          infoCardWid.value = "calc(100vw - 232px)";
+        }
+      });
     }
   },
   {

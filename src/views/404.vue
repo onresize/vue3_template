@@ -59,47 +59,53 @@
 
 <script>
 export default {
-  name: "NotFound",
-  data() {
-    return {
-      totalTime: -550, //记录具体倒计时时间
-      clearInte: false,
-      restTime: 10,
-    };
-  },
-  methods: {
-    fnSetInterval() {
-      let clock = window.setInterval(() => {
-        this.totalTime = this.totalTime + 55;
-        this.restTime = Math.abs(this.totalTime) / 55;
-        this.clearInte && window.clearInterval(clock);
-        if (this.totalTime >= -55) {
-          window.clearInterval(clock);
-          setTimeout(() => {
-            if (this.clearInte) {
-              return false;
-            }
-            this.$router.push({
-              path: "/",
-            });
-          }, 500);
-        }
-      }, 1000);
-    },
-  },
-  beforeUnmount() {
-    this.clearInte = true;
-  },
-  mounted() {
-    this.fnSetInterval();
-  },
+  name: "404",
 };
+</script>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
+
+const Router = useRouter();
+
+const totalTime = ref(-550);
+const clearInte = ref(false);
+const restTime = ref(10);
+
+const fnSetInterval = () => {
+  let clock = window.setInterval(() => {
+    totalTime.value = totalTime.value + 55;
+    restTime.value = Math.abs(totalTime.value) / 55;
+    clearInte.value && window.clearInterval(clock);
+    if (totalTime.value >= -55) {
+      window.clearInterval(clock);
+      setTimeout(() => {
+        if (clearInte.value) {
+          return false;
+        }
+        Router.push({
+          path: "/",
+        });
+      }, 500);
+    }
+  }, 1000);
+};
+
+onBeforeUnmount(() => {
+  clearInte.value = true;
+});
+
+onMounted(() => {
+  fnSetInterval();
+});
 </script>
 
 <style lang="less" scoped>
 .box-404 {
   background: #000;
-  height: 100vh;
+  border-radius: 10px;
+  height: calc(100vh - 162px);
   overflow: hidden;
   display: flex;
   font-family: "Anton", sans-serif;

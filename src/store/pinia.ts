@@ -43,6 +43,9 @@ export const useMainStore = defineStore("Pinia", {
     changeSliderState(res) {
       this.isCollapse = res;
     },
+    changeIsOpenSlide(res) {
+      this.isOpenSlide = res;
+    },
     changeSvgList(list) {
       this.iconList = list;
     },
